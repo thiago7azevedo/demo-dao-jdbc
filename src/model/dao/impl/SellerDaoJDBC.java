@@ -53,20 +53,10 @@ public class SellerDaoJDBC implements SellerDao {
 				st.setInt(1, id); // 1 = primeiro ? - id éo que vem de parametro de fora
 				rs = st.executeQuery(); //recebe o que foi executado
 				if (rs.next()) { // verifica se existir uma linha com valores, retorna verdadeiro e cai dentro do if
-					Department dep = new Department(); // instancia o objeto dep Department - vai pendurar nos dados do cliente
-					dep.setId(rs.getInt("DepartmentId")); // seta o ID pela coluna DepartmentID fazendo umma busca de detInt que é o tipo do campo
-					dep.setName(rs.getString("DepName")); // seta o nome pela coluna DepName que é uma variavel string
-					//instanciou objeto Department em cima
-					// instnacia o objeto Seller (vendendor) a baixo
-					Seller obj = new Seller();
-					obj.setId(rs.getInt("Id"));
-					obj.setName(rs.getString("Name"));
-					obj.setEmail(rs.getString("Email"));
-					obj.setBaseSalary(rs.getDouble("BaseSalary"));					
-					obj.setBirthDate(rs.getDate("BirthDate"));
-					obj.setDepartment(dep);					
-					return obj;					
-				}
+					Department dep = instantiateDepartment(rs);
+					Seller obj = instantianteSeller(rs, dep);
+					return obj;						
+					}					
 				
 				return null;			
 			}
@@ -78,6 +68,24 @@ public class SellerDaoJDBC implements SellerDao {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
+	}
+
+	private Seller instantianteSeller(ResultSet rs, Department dep) throws SQLException {
+		Seller obj = new Seller();
+		obj.setId(rs.getInt("Id"));
+		obj.setName(rs.getString("Name"));
+		obj.setEmail(rs.getString("Email"));
+		obj.setBaseSalary(rs.getDouble("BaseSalary"));					
+		obj.setBirthDate(rs.getDate("BirthDate"));
+		obj.setDepartment(dep);
+		return obj;
+	}
+
+	private Department instantiateDepartment(ResultSet rs) throws SQLException {
+		Department dep =  new Department(); 
+		dep.setId(rs.getInt("DepartmentId")); 
+		dep.setName(rs.getString("DepName"));
+		return dep;
 	}
 
 	@Override

@@ -57,6 +57,18 @@ Seller [id=2, name=Maria Green, email=maria@gmail.com, birthDate=1979-12-31, bas
 		Seller newSeller = new Seller(null, "Greg", "greg@gmail.com", new Date(), 4000.0, department);
 		sellerDao.insert(newSeller);
 		System.out.println("Inserted! New id = " + newSeller.getId());
+		
+		/*
+		 * ===== TEST 4: seller insert =====
+		 * Inserted! New id = 10
+		 */
+		System.out.println("\n===== TEST 5: seller update =====");
+		seller = sellerDao.findById(1);
+		seller.setName("Marths Waine");
+		sellerDao.update(seller);
+		System.out.println("Update completed");
+		
+		
 	}
 
 }
